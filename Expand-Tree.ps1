@@ -9,11 +9,13 @@ function Expand-Tree ($leaf, $currentRoot) {
             $branchPath = "$currentRoot.$branchName"
             Expand-Tree $branchValue $branchPath
         }
+        $value = 'PSCustomObject'
     }
     else {
-        return     [PSCustomObject]@{
-            path = $currentRoot
-            value = $leaf
-        }
+        $value = $leaf
+    }
+    return     [PSCustomObject]@{
+        path = $currentRoot
+        value = $value
     }
 }
