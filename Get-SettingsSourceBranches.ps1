@@ -1,3 +1,3 @@
 function Get-SettingsDescriptorBranches ($settingsFileDescriptor) {
-    $settingsFileDescriptor.psobject.properties     
+    return expand-tree $settingsFileDescriptor 
 }

@@ -1,0 +1,14 @@
+{
+    "prod": {
+        "settings": {
+            "count": "Int",
+            "times": "Int"
+        },
+        "cred": {
+            "this": {
+                "user": "String",
+                "pass": "String"
+            }
+        }
+    }
+}
