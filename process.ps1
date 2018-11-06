@@ -1,21 +1,23 @@
 . ( join-path $PSScriptRoot "Get-SettingsFile")
 . ( join-path $PSScriptRoot "Expand-Tree")
-. ( join-path $PSScriptRoot "Get-SettingsSourceBranches")
+. ( join-path $PSScriptRoot "Compare-Trees")
 
-$settingsFileDescriptor = [PSCustomObject]@{
+$settingsRequired = [PSCustomObject]@{
     prod = [PSCustomObject]@{ 
         cred     = [PSCustomObject]@{
             this = [PSCustomObject]@{
-                user = 'String'; 
-                pass = 'String'; 
+                user = 'System.String'; 
+                pass = 'System.String'; 
             }; 
         };
         settings = [PSCustomObject]@{
-            count = 'Int';
-            times = 'Int'; 
+            count = 'System.Int32';
+            times = 'System.Int32'; 
         }; 
-        n = 'Int';
+        n = 'System.Int32';
     }; 
-}
+};
+
 $settingsFile = Get-SettingsFile "settings.json"
-Get-SettingsDescriptorBranches $settingsFileDescriptor
+$settingsDescription = expand-tree $settingsRequired | Sort-Object stringPath
+Compare-Trees $settingsDescription $settingsFile
