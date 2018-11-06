@@ -1,31 +1,39 @@
 function Compare-Trees ($description, $root) {
     $description | ForEach-Object {
-        $leaf = $_
-        $leafPath = $leaf.path
-        $leafPathString = $leaf.stringPath
-        $leafType = $leaf.value
-        $leafValue = $root
-        if ($leafPath) {
-            foreach ($pathPart in $leafPath) {
-                $leafValue = $leafValue.$pathPart
+        $branch = $_
+        $branchPath = $branch.path
+        $branchPathString = $branch.stringPath
+        $branchType = $branch.value
+        $branchValue = $root
+        if ($branchPath) {
+            foreach ($pathPart in $branchPath) {
+                $branchValue = $branchValue.$pathPart
             }
         }
-        $isContainer = ($leafType -eq "System.Management.Automation.PSCustomObject")
-        if (!$isContainer) {
-            write-host "********$leafPathString********"
-            if ($leafValue) {
-                $valueType = $leafValue.psobject.typenames
-                $rightType = ( $valueType -contains $leafType )
-                if ($rightType) {
-                    write-host $leafValue
-                }
-                else {
-                    Write-Host "$leafValue is wrong type, should be $leafType"
+        
+        <#
+        
+        HERE I DO SOMETHING WITH THE VALUE
+        
+        #>
+        
+        
+        write-host "********$branchPathString********"
+        if ($branchValue) {
+            $valueType = $branchValue.psobject.typenames
+            $rightType = ( $valueType -contains $branchType )
+            if ($rightType) {
+                $isLeaf = ($branchType -ne "System.Management.Automation.PSCustomObject")
+                if ($isLeaf) {
+                    write-host "$branchValue is leaf"
                 }
             }
-            ELSE {
-                write-host "No leaf value exists"
+            else {
+                Write-Host "$branchValue is wrong type $valueType, should be $branchType"
             }
+        }
+        ELSE {
+            write-host "No leaf value exists"
         }
     }
 }
