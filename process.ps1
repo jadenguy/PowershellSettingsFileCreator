@@ -7,4 +7,4 @@ $settingsRequired = Get-SettingsFile "required.json"
 $settingsFile = Get-SettingsFile "settings.json"
 $settingsDescription = expand-tree $settingsRequired '$settings' | Sort-Object stringPath
 $settings = Compare-Trees $settingsDescription $settingsFile
-$settings
+$settings | ConvertTo-Json -Depth 100
