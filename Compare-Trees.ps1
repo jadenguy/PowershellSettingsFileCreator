@@ -1,23 +1,32 @@
 function Compare-Trees ($description, $root) {
+    $ret = $root
+    $containers = $description | Where-Object {$_.value -eq "System.Management.Automation.PSCustomObject" }
+    foreach ($container in $containers) {
+        $path = $container.path
+        $x = $ret
+        foreach ($step in $path) {
+            if (!$x.$step) {
+                $x|Add-Member -NotePropertyName $step -NotePropertyValue ([PSCustomObject]@{})
+            }
+            $x = $x.$step
+        }
+    }
     $description | ForEach-Object {
         $branch = $_
         $branchPath = $branch.path
         $branchPathString = $branch.stringPath
         $branchType = $branch.value
-        $branchValue = $root
+        $branchValue = $ret
         if ($branchPath) {
             foreach ($pathPart in $branchPath) {
+                if (!$branchValue.$pathPart) {               
+                    Write-Host "please provide a $branchPathString of $branchType"
+                    $branchValue | add-member -notepropertyname $pathPart -NotePropertyValue (read-host)
+                }
                 $branchValue = $branchValue.$pathPart
             }
         }
-        
-        <#
-        
-        HERE I DO SOMETHING WITH THE VALUE
-        
-        #>
-        
-        
+        <# VALDATING RESULTS BELOW #>
         write-host "********$branchPathString********"
         if ($branchValue) {
             $valueType = $branchValue.psobject.typenames
@@ -34,6 +43,10 @@ function Compare-Trees ($description, $root) {
         }
         ELSE {
             write-host "No leaf value exists"
+            $hostValue = Read-Host
+            $branchValue += $hostValue
+            write-host $hostValue
         }
     }
+    return $ret
 }
