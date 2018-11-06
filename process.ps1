@@ -2,22 +2,9 @@
 . ( join-path $PSScriptRoot "Expand-Tree")
 . ( join-path $PSScriptRoot "Compare-Trees")
 
-$settingsRequired = [PSCustomObject]@{
-    prod = [PSCustomObject]@{ 
-        cred     = [PSCustomObject]@{
-            this = [PSCustomObject]@{
-                user = 'System.String'; 
-                pass = 'System.String'; 
-            }; 
-        };
-        settings = [PSCustomObject]@{
-            count = 'System.Int32';
-            times = 'System.Int32'; 
-        }; 
-        n = 'System.Int32';
-    }; 
-};
 
+$settingsRequired = Get-SettingsFile "required.json"
 $settingsFile = Get-SettingsFile "settings.json"
-$settingsDescription = expand-tree $settingsRequired | Sort-Object stringPath
-Compare-Trees $settingsDescription $settingsFile
+$settingsDescription = expand-tree $settingsRequired '$settings' | Sort-Object stringPath
+$settings = Compare-Trees $settingsDescription $settingsFile
+$settings

@@ -1,0 +1,15 @@
+{
+    "prod": {
+        "cred": {
+            "this": {
+                "user": "System.String",
+                "pass": "System.String"
+            }
+        },
+        "settings": {
+            "count": "System.Int32",
+            "times": "System.Int32"
+        },
+        "n": "System.Int32"
+    }
+}
