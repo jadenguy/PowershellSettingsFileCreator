@@ -1,52 +1,56 @@
 function Compare-Trees ($description, $root) {
-    $ret = $root
-    $containers = $description | Where-Object {$_.value -eq "System.Management.Automation.PSCustomObject" }
-    foreach ($container in $containers) {
-        $path = $container.path
-        $x = $ret
+    $retObject = $root
+    $branchs = $description | Where-Object {$_.propertyType -eq "System.Management.Automation.PSCustomObject" }
+    foreach ($branch in $branchs) {
+        $path = $branch.path
+        $x = [ref]$retObject
         foreach ($step in $path) {
-            if (!$x.$step) {
-                $x|Add-Member -NotePropertyName $step -NotePropertyValue ([PSCustomObject]@{})
+            if (!$x.value.$step) {
+                $x.Value|Add-Member -NotePropertyName $step -NotePropertyValue ([PSCustomObject]@{})
             }
-            $x = $x.$step
+            $x = [ref]$x.Value.$step
         }
     }
-    $description | ForEach-Object {
-        $branch = $_
-        $branchPath = $branch.path
-        $branchPathString = $branch.stringPath
-        $branchType = $branch.value
-        $branchValue = $ret
-        if ($branchPath) {
-            foreach ($pathPart in $branchPath) {
-                if (!$branchValue.$pathPart) {               
-                    Write-Host "please provide a $branchPathString of $branchType"
-                    $branchValue | add-member -notepropertyname $pathPart -NotePropertyValue ((read-host)  -as $branchType )
-                }
-                $branchValue = $branchValue.$pathPart
-            }
-        }
-        <# VALDATING RESULTS BELOW #>
-        write-host "********$branchPathString********"
-        if ($branchValue) {
-            $valueType = $branchValue.psobject.typenames
-            $rightType = ( $valueType -contains $branchType )
-            if ($rightType) {
-                $isLeaf = ($branchType -ne "System.Management.Automation.PSCustomObject")
-                if ($isLeaf) {
-                    write-host "$branchValue is leaf"
-                }
-            }
-            else {
-                Write-Host "$branchValue is wrong type $valueType, should be $branchType"
-            }
-        }
-        ELSE {
-            write-host "No leaf value exists"
-            $hostValue = Read-Host
-            $branchValue += $hostValue
-            write-host $hostValue
-        }
-    }
-    return $ret
+    # $leaves = $description | Where-Object {$_.propertyType -ne "System.Management.Automation.PSCustomObject" }
+    # foreach ($leaf in $leaves) {        
+    #     $leafPath = $leaf.path
+    #     $leafPathString = $leaf.stringPath
+    #     $leafType = $leaf.propertyType
+    #     $leafValue = [ref]$retObject
+    #     write-host $leafPathString, $leafValue
+    #     #     if ($leafPath) {
+    #     #         foreach ($pathPart in $leafPath) {
+    #     #             if (!$leafValue.Value.$pathPart) {               
+    #     #                 # Write-Host "please provide a $leafPathString of $leafType"
+    #     #                 $leafValue.Value | add-member -notepropertyname $pathPart -NotePropertyValue $null
+    #     #                 write-host "new value added"
+    #     #             }
+    #     #             $leafValue = [ref]($leafValue.Value).$pathPart
+    #     #         }
+    #     #     }
+    #     #     <# VALDATING RESULTS BELOW #>
+    #     #     write-host "********$leafPathString********"
+    #     #     $leafValue.Value=1
+    #     #     write-host $leafValue.Value
+    #     #     # if ($leafValue.Value) {
+    #     #     #     $valueType = $leafValue.Value.psobject.typenames
+    #     #     #     $rightType = ( $valueType -contains $leafType )
+    #     #     #     if ($rightType) {
+    #     #     #         $isLeaf = ($leafType -ne "System.Management.Automation.PSCustomObject")
+    #     #     #         if ($isLeaf) {
+    #     #     #             write-host "$($leafValue.value) is leaf"
+    #     #     #         }
+    #     #     #     }
+    #     #     #     else {
+    #     #     #         Write-Host "$($leafValue.value) is wrong type $valueType, should be $leafType"
+    #     #     #     }
+    #     #     # }
+    #     #     # ELSE {
+    #     #     #     write-host "No leaf value exists"
+    #     #     #     $hostValue = ((Read-Host) -as $leafType)
+    #     #     #     $leafValue.Value = $hostValue
+    #     #     #     write-host $hostValue
+    #     #     # }
+    # }
+    return $retObject
 }
