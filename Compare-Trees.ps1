@@ -16,40 +16,41 @@ function Compare-Trees ($description, $root) {
         $leafPath = $leaf.path
         $leafPathString = $leaf.stringPath
         $leafType = $leaf.propertyType
-        $leafValue = [ref]$retObject
-        if ($leafPath) {
-            foreach ($pathPart in $leafPath) {
-                if (!$leafValue.Value.$pathPart) {               
-                    $leafValue.Value | add-member -notepropertyname $pathPart -NotePropertyValue $null
-                    write-host "new value added for $leafPathString"
-                }
-                $leafValue = [ref]($leafValue.Value).$pathPart
+        write-host "********$leafType $leafPathString********"
+        $leafBranch = @( [ref]$retObject)
+        for ($i = 0; $i -lt $leafpath.length; $i++) {
+            $pathPart = $leafPath[$i]
+            $value = ($leafBranch[$i].Value.$pathPart)
+            if (!$value) {               
+                $leafValue.Value | add-member -notepropertyname $pathPart -NotePropertyValue $null
+                write-host "new value added for $leafPathString"
             }
+            $leafBranch += [ref]($leafBranch[$i].Value).$pathpart
+            write-host $pathPart
         }
-        write-host $leafPathString, $leafValue.value
-        #     <# VALDATING RESULTS BELOW #>
-        #     write-host "********$leafPathString********"
-        #     $leafValue.Value=1
-        #     write-host $leafValue.Value
-        #     # if ($leafValue.Value) {
-        #     #     $valueType = $leafValue.Value.psobject.typenames
-        #     #     $rightType = ( $valueType -contains $leafType )
-        #     #     if ($rightType) {
-        #     #         $isLeaf = ($leafType -ne "System.Management.Automation.PSCustomObject")
-        #     #         if ($isLeaf) {
-        #     #             write-host "$($leafValue.value) is leaf"
-        #     #         }
-        #     #     }
-        #     #     else {
-        #     #         Write-Host "$($leafValue.value) is wrong type $valueType, should be $leafType"
-        #     #     }
-        #     # }
-        #     # ELSE {
-        #     #     write-host "No leaf value exists"
-        #     #     $hostValue = ((Read-Host) -as $leafType)
-        #     #     $leafValue.Value = $hostValue
-        #     #     write-host $hostValue
-        #     # }
+        write-host "done adding leaves"
+        # write-host $leafPathString, $leafValue.value
+        <# VALDATING RESULTS BELOW #>
+        
+        # while (!$leafValue.Value) {
+        #     write-host "No leaf value exists"
+        #     $hostValue = ((Read-Host) -as $leafType)
+        #     $leafValue.Value = $hostValue
+        #     $leafValue
+        # }
+        # if ($leafValue.Value) {
+        #     $valueType = $leafValue.Value.psobject.typenames
+        #     $rightType = ( $valueType -contains $leafType )
+        #     if ($rightType) {
+        #         $isLeaf = ($leafType -ne "System.Management.Automation.PSCustomObject")
+        #         if ($isLeaf) {
+        #             write-host "$($leafValue.value) is leaf"
+        #         }
+        #     }
+        #     else {
+        #         Write-Host "$($leafValue.value) is wrong type $valueType, should be $leafType"
+        #     }
+        # }
     }
     return $retObject
 }
