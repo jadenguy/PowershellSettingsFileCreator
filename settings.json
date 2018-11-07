@@ -1,8 +1,8 @@
 {
     "prod": {
         "settings": {
-            "count": 1,
-            "times": 1
+            "count": 2,
+            "times": 3
         },
         "cred": {
             "this": {
@@ -10,5 +10,6 @@
                 "pass": "passString"
             }
         }
-    }
+    },
+    "garbage" : 4
 }
