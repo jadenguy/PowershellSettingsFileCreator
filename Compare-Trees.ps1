@@ -21,7 +21,7 @@ function Compare-Trees ($description, $root) {
             foreach ($pathPart in $branchPath) {
                 if (!$branchValue.$pathPart) {               
                     Write-Host "please provide a $branchPathString of $branchType"
-                    $branchValue | add-member -notepropertyname $pathPart -NotePropertyValue (read-host)
+                    $branchValue | add-member -notepropertyname $pathPart -NotePropertyValue ((read-host)  -as $branchType )
                 }
                 $branchValue = $branchValue.$pathPart
             }
