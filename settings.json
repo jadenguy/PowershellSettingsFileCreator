@@ -5,11 +5,11 @@
             "times": 3
         },
         "cred": {
-            "this": {
+            "system": {
                 "user": "userString",
                 "pass": "passString"
             }
         }
     },
-    "garbage" : 4
+    "garbage": 4
 }
