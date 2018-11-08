@@ -1,22 +1,32 @@
 . ( join-path $PSScriptRoot "Get-SettingsFile")
-. ( join-path $PSScriptRoot "Expand-Tree")
-. ( join-path $PSScriptRoot "Expand-Tree2")
-. ( join-path $PSScriptRoot "Compare-Trees")
+#. ( join-path $PSScriptRoot "Expand-Tree")
+#. ( join-path $PSScriptRoot "Compare-Trees")
 . ( join-path $PSScriptRoot "Compare-Trees2")
 
+$wantInt = "System.Int32"
 $int = 1
 $string = 'a'
-$object = [PSCustomObject]@{
-    Name = "ObjectNameInt"
-    Type = "Sys.Int32"
+$wantedObject = [PSCustomObject]@{
+    IntValue = "System.Int32"
+    StrValue = "System.String"
 }
-
-Compare-Trees2 -wantedObject $int -givenObject $int
-Compare-Trees2 -wantedObject $string -givenObject $int
-Compare-Trees2 -wantedObject $object -givenObject $int
-#$settingsRequired = Get-SettingsFile "required.json"
-#$settingsFile = Get-SettingsFile "settings.json"
-#$x = Compare-Trees2 $settingsRequired $settingsFile
-#$settingsDescription = Expand-Tree $settingsRequired '$settings' | Sort-Object stringPath
-# $settings = Compare-Trees $settingsDescription $settingsFile
-# $settings.prod
+$validObject = [PSCustomObject]@{
+    IntValue = 1
+    StrValue = 'a'
+}
+$invalidObject = [PSCustomObject]@{
+    IntValue = 'a'
+    StrValue = 'a'
+}
+$missingKeyObject = [PSCustomObject]@{
+    StrValue = 'a'
+}
+Write-Host starting
+Compare-Trees2 -wantedObject $wantInt -givenObject $int -passes $true
+Compare-Trees2 -wantedObject $wantInt -givenObject ([ref]$string)
+Compare-Trees2 -wantedObject $wantInt -givenObject ([ref]$missingKeyObject)
+Compare-Trees2 -wantedObject $wantedObject -givenObject ([ref]$validObject) -passes $true
+Compare-Trees2 -wantedObject $wantedObject -givenObject ([ref]$int)
+Compare-Trees2 -wantedObject $wantedObject -givenObject ([ref]$invalidObject)
+Compare-Trees2 -wantedObject $wantedObject -givenObject ([ref]$missingKeyObject)
+write-host done
