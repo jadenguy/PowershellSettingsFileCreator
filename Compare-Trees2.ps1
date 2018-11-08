@@ -41,9 +41,10 @@ function Compare-Trees2 {
         foreach ($prop in $WantedPropertyList) {
             $wantedPropertyName = $prop.Name
             $wantedPropertyType = $prop.Value 
-            $propertyExists=($havePropertyList -contains $wantedPropertyName)
+            $propertyExists=($havePropertyList.Name -contains $wantedPropertyName)
             if (!$propertyExists) {
                 $givenObject.Value | Add-Member -NotePropertyName $wantedPropertyName -NotePropertyValue $null
+                write-host "Created property"
             }
             $havePropertyValue = [ref]$givenObject.Value.$wantedPropertyName
             Compare-Trees2 -wantedObject  $wantedPropertyType -givenObject $havePropertyValue -depth ($depth + 1) -passes $passes
