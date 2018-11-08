@@ -1,4 +1,4 @@
-function Compare-Trees2 {
+function Update-Tree {
     [CmdletBinding()]
     param ($wantedObject
         , [ref]$givenObject
@@ -13,18 +13,18 @@ function Compare-Trees2 {
     if (!$wantBranch) { 
         $rightType = ($givenType -contains $wantedObject)
         if ($passes -and $rightType) {
-            Write-Host "Yes, passed as expected"
+            # Write-Host "Yes, passed as expected"
         }
         if (!$passes -and $rightType) {
-            Write-Host "Oops, passed somehow"
+            # Write-Host "Oops, passed somehow"
         }
         if ($passes -and !$rightType) {
-            Write-Host "Oops, failed somehow"
+            # Write-Host "Oops, failed somehow"
         }
         if (!$passes -and !$rightType) {
-            Write-Host "Yes, failed as expected"
+            # Write-Host "Yes, failed as expected"
         }
-        write-host "leaf"
+        # Write-Host "leaf"
     }
     <# If branch node
     verify/create branch
@@ -44,12 +44,12 @@ function Compare-Trees2 {
             $propertyExists=($havePropertyList.Name -contains $wantedPropertyName)
             if (!$propertyExists) {
                 $givenObject.Value | Add-Member -NotePropertyName $wantedPropertyName -NotePropertyValue $null
-                write-host "Created property"
+                # Write-Host "Created property"
             }
             $havePropertyValue = [ref]$givenObject.Value.$wantedPropertyName
             Compare-Trees2 -wantedObject  $wantedPropertyType -givenObject $havePropertyValue -depth ($depth + 1) -passes $passes
         }
-        write-host "branch"
+        # Write-Host "branch"
     }
-    return $givenObject.Value
+    return
 }
