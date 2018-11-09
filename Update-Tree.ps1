@@ -2,29 +2,20 @@ function Update-Tree {
     [CmdletBinding()]
     param ($wantedObject
         , [ref]$givenObject
-        , [bool]$passes = $false
+        , [bool]$wasComplete = $true
         , [int]$depth
     )
     $givenType = $givenObject.Value.psobject.TypeNames
     $wantedType = $wantedObject.psobject.TypeNames
     $wantBranch = ($wantedType -contains "System.Management.Automation.PSCustomObject")
+    $rightType = ($givenType -contains $wantedObject)
+    if (!$rightType) {
+        $wasComplete = $false
+    }
     <# If leaf node
     make comparisons #>
     if (!$wantBranch) { 
-        $rightType = ($givenType -contains $wantedObject)
-        if ($passes -and $rightType) {
-            # Write-Host "Yes, passed as expected"
-        }
-        if (!$passes -and $rightType) {
-            # Write-Host "Oops, passed somehow"
-        }
-        if ($passes -and !$rightType) {
-            # Write-Host "Oops, failed somehow"
-        }
-        if (!$passes -and !$rightType) {
-            # Write-Host "Yes, failed as expected"
-        }
-        # Write-Host "leaf"
+        
     }
     <# If branch node
     verify/create branch
@@ -47,9 +38,9 @@ function Update-Tree {
                 # Write-Host "Created property"
             }
             $havePropertyValue = [ref]$givenObject.Value.$wantedPropertyName
-            Compare-Trees2 -wantedObject  $wantedPropertyType -givenObject $havePropertyValue -depth ($depth + 1) -passes $passes
+            Compare-Trees2 -wantedObject  $wantedPropertyType -givenObject $havePropertyValue -depth ($depth + 1) -wasComplete $wasComplete
         }
         # Write-Host "branch"
     }
-    return
+    return $wasComplete
 }
