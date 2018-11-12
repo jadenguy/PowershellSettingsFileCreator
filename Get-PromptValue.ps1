@@ -3,6 +3,10 @@ function Get-PromptValue {
     param ($wantedTypeString,
         [bool]$wantedCustomSecureString = $false
     )
+    do {
+    $prompt = (Read-Host)    
+    $ret =  ($prompt -as $wantedTypeString)
+    } until ($ret)
     
-    
+    return $ret    
 }
