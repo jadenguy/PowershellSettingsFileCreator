@@ -3,6 +3,7 @@
 #. ( join-path $PSScriptRoot "Compare-Trees")
 . ( join-path $PSScriptRoot "Update-Tree")
 . ( join-path $PSScriptRoot "Test-Tree")
+. ( join-path $PSScriptRoot "Get-PromptValue")
 
 Write-Host starting
 

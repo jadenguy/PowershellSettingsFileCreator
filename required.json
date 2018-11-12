@@ -3,7 +3,7 @@
         "cred": {
             "system": {
                 "user": "System.String",
-                "pass": "System.String"
+                "pass": "Custom.SecureString"
             }
         },
         "settings": {
