@@ -9,6 +9,6 @@ Write-Host starting
 
 $settingsRequired = Get-SettingsFile "required.json"
 $settingsFileIn = Get-SettingsFile "settings.json"
-Update-Tree $settingsRequired ([ref]$settingsFileIn)
+Update-Tree $settingsRequired ([ref]$settingsFileIn) "settings"
 $settingsFileOut = $settingsFileIn | ConvertTo-Json -Depth 100
 $settingsFileOut
