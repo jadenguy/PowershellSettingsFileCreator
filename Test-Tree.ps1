@@ -1,6 +1,7 @@
 function Test-Tree {
     $wantInt = "System.Int32"
     $int = 1
+    $intClobber = 1
     $string = 'a'
     $wantedObject = [PSCustomObject]@{
         IntValue = "System.Int32"
@@ -21,7 +22,8 @@ function Test-Tree {
     Update-Tree -wantedObject $wantInt -givenObject ([ref]$string)
     Update-Tree -wantedObject $wantInt -givenObject ([ref]$missingKeyObject)
     Update-Tree -wantedObject $wantedObject -givenObject ([ref]$validObject)
-    Update-Tree -wantedObject $wantedObject -givenObject ([ref]$int)
     Update-Tree -wantedObject $wantedObject -givenObject ([ref]$invalidObject)
+    Update-Tree -wantedObject $wantedObject -givenObject ([ref]$intClobber)
     Update-Tree -wantedObject $wantedObject -givenObject ([ref]$missingKeyObject)
+    return
 }
