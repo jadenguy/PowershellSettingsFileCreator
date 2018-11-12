@@ -7,7 +7,7 @@ function Get-PromptValue {
     )
     do {
         
-        $prompt = (Read-Host -Prompt "$wantedType $wantedObjectName")    
+        $prompt = (Read-Host -Prompt "$wantedTypeString $wantedName")    
         $ret = ($prompt -as $wantedTypeString)
     } until ($ret)
     return $ret    
