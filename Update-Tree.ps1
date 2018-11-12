@@ -2,6 +2,7 @@ function Update-Tree {
     [CmdletBinding()]
     param ($wantedObject
         , [ref]$givenObject
+        , $wantedObjectName
         , [bool]$wasComplete = $true
         , [int]$depth
     )
@@ -20,7 +21,12 @@ function Update-Tree {
     make comparisons #>
     if (!$wantBranch) { 
         IF (!$rightType) {
-            $givenObject.Value = Get-PromptValue $wantedObject $wantCustomSecureString
+            $args = @{wantedTypeString   = $wantedObject
+                wantedObjectName = $wantedObjectName
+                wantedCustomSecureString = $wantCustomSecureString
+            }
+            #$givenObject.Value = Get-PromptValue @args
+            write-host "prompt for new $wantedType $wantedObjectName"
         }
     }
     <# If branch node
@@ -44,7 +50,7 @@ function Update-Tree {
                 # Write-Host "Created node $wantedPropertyName"
             }
             $havePropertyValue = [ref]$givenObject.Value.$wantedPropertyName
-            Compare-Trees2 -wantedObject  $wantedPropertyType -givenObject $havePropertyValue -depth ($depth + 1) -wasComplete $wasComplete
+            $wasComplete = Update-Tree -wantedObject  $wantedPropertyType -wantedObjectName $wantedPropertyName -givenObject $havePropertyValue -depth ($depth + 1) -wasComplete $wasComplete
         }
         # Write-Host "branch"
     }
