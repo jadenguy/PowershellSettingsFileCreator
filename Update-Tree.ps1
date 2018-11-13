@@ -9,25 +9,26 @@ function Update-Tree {
     $givenType = $givenObject.Value.psobject.TypeNames
     $wantedType = $wantedObject.psobject.TypeNames
     $wantBranch = ($wantedType -contains "System.Management.Automation.PSCustomObject")
-    $wantCustomSecureString = ($wantedObject -eq "Custom.SecureString")
-    if ($wantCustomSecureString) {
-        $wantedObject = "System.String"
-    }
-    $rightType = ($givenType -contains $wantedObject)
-    if (!$rightType) {
-        $wasComplete = $false
-    }
     <# If leaf node
     make comparisons #>
     if (!$wantBranch) { 
+        $wantCustomSecureString = ($wantedObject -eq "Custom.SecureString")
+        if ($wantCustomSecureString) {
+            $wantedObject = "System.String"
+        }
+        $rightType = ($givenType -contains $wantedObject)
         IF (!$rightType) {
-            $args = @{wantedTypeString   = $wantedObject
-                wantedObjectName = $wantedObjectName
+            $wasComplete = $false
+            $promtArgs = @{wantedTypeString   = $wantedObject
+                wantedName = $wantedObjectName
+                currentValue = $givenObject.Value
                 wantedCustomSecureString = $wantCustomSecureString
             }
-            #$givenObject.Value = Get-PromptValue @args
-            write-host "prompt for new $wantedType $wantedObjectName"
+            #$prompt = Get-PromptValue @promtArgs
+            $givenObject.Value =9
+            write-host "Prompted For Value"
         }
+        Write-Host "done with leaf $wantedObjectName"
     }
     <# If branch node
     verify/create branch
@@ -37,7 +38,7 @@ function Update-Tree {
         $haveBranch = ($givenType -contains "System.Management.Automation.PSCustomObject")
         if (!$haveBranch) {
             $givenObject.Value = [PSCustomObject]@{}
-            # Write-Host "Created branch"
+            Write-Host "Created branch"
         }
         $wantedPropertyList = $wantedObject.psobject.Properties
         $havePropertyList = $givenObject.Value.psobject.Properties
@@ -46,13 +47,20 @@ function Update-Tree {
             $wantedPropertyType = $prop.Value 
             $propertyExists = ($havePropertyList.Name -contains $wantedPropertyName)
             if (!$propertyExists) {
-                $givenObject.Value | Add-Member -NotePropertyName $wantedPropertyName -NotePropertyValue $null
-                # Write-Host "Created node $wantedPropertyName"
+                $givenObject.Value | Add-Member -NotePropertyName $wantedPropertyName -NotePropertyValue 0
+                Write-Host "Created node $wantedPropertyName"
             }
-            $havePropertyValue = [ref]$givenObject.Value.$wantedPropertyName
-            $wasComplete = Update-Tree -wantedObject  $wantedPropertyType -wantedObjectName $wantedPropertyName -givenObject $havePropertyValue -depth ($depth + 1) -wasComplete $wasComplete
+            #$havePropertyValue = [ref]$givenObject.Value.$wantedPropertyName
+            $nextLevelArgs = @{
+                wantedObject =  $wantedPropertyType 
+                wantedObjectName = "$wantedObjectName.$wantedPropertyName"
+                givenObject = [ref]($givenObject.Value.$wantedPropertyName) 
+                depth = ($depth + 1) 
+                wasComplete = $wasComplete
+            }
+            $wasComplete = Update-Tree @nextLevelArgs
         }
-        # Write-Host "branch"
+        Write-Host "done with branch $wantedObjectName"
     }
     return $wasComplete
 }
