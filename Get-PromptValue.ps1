@@ -7,7 +7,7 @@ function Get-PromptValue {
     )
     do {
         $prompt = (Read-Host -Prompt "Enter a $wantedTypeString for $wantedName (Was $currentValue)") 
-        if (!$Prompt){$prompt = $currentValue}
+        if (!$prompt){$prompt = $currentValue} else {$currentValue = $prompt}
         $ret = ($prompt -as $wantedTypeString)
     } until ($ret)
     return $ret    

@@ -5,7 +5,7 @@
 # . ( join-path $PSScriptRoot "Update-Tree")
 . ( join-path $PSScriptRoot "Update-Tree2")
 . ( join-path $PSScriptRoot "Test-Tree")
-# . ( join-path $PSScriptRoot "Get-PromptValue")
+. ( join-path $PSScriptRoot "Get-PromptValue")
 
 Write-Host starting
 Test-Tree

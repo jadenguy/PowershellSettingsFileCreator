@@ -1,5 +1,6 @@
 function Test-Tree {
     $wantInt = "System.Int32"
+    $wantString = "System.String"
     $int = 1
     $intClobber = 1
     $string = 'a'
@@ -34,14 +35,16 @@ function Test-Tree {
     $missingKeyObject = [PSCustomObject]@{
         StrValue = 'a'
     }
-    Update-Tree -wantedObject $wantInt -givenObject $int -wantedObjectName "int"
-    Update-Tree -wantedObject $wantInt -givenObject $string -wantedObjectName "string"
-    Update-Tree -wantedObject $wantInt -givenObject $missingKeyObject -wantedObjectName "missingKeyObject"
-    Update-Tree -wantedObject $wantedObject -givenObject $validObject -wantedObjectName "valid"
-    Update-Tree -wantedObject $wantedObject -givenObject $invalidObject -wantedObjectName "invalid"
-    Update-Tree -wantedObject $wantedObject -givenObject $intClobber -wantedObjectName "intClobber"
-    Update-Tree -wantedObject $wantedObject -givenObject $missingKeyObject -wantedObjectName "missing"
-    Update-Tree -wantedObject $wantedNestedObject -givenObject $validNextedObject -wantedObjectName "nest"
-    Update-Tree -wantedObject $wantedNestedObject -givenObject $invalidNextedObject -wantedObjectName "badNest"
+    Update-Tree -wantedObject $wantInt -givenObject $int -wantedObjectName "hwint"
+    Update-Tree -wantedObject $wantInt -givenObject $string -wantedObjectName "hstringwint"
+    Update-Tree -wantedObject $wantString -givenObject $string -wantedObjectName "hstringwstring"
+    Update-Tree -wantedObject $wantString -givenObject $int -wantedObjectName "hintwstring"
+    Update-Tree -wantedObject $wantInt -givenObject $missingKeyObject -wantedObjectName "hobjwint"
+    Update-Tree -wantedObject $wantedObject -givenObject $validObject -wantedObjectName "hwobj"
+    Update-Tree -wantedObject $wantedObject -givenObject $invalidObject -wantedObjectName "hwobjInv"
+    Update-Tree -wantedObject $wantedObject -givenObject $intClobber -wantedObjectName "hobjwint"
+    Update-Tree -wantedObject $wantedObject -givenObject $missingKeyObject -wantedObjectName "hwobjMissing"
+    Update-Tree -wantedObject $wantedNestedObject -givenObject $validNextedObject -wantedObjectName "hwnext"
+    Update-Tree -wantedObject $wantedNestedObject -givenObject $invalidNextedObject -wantedObjectName "hwbadNest"
     return
 }
