@@ -8,8 +8,7 @@ function Update-Tree {
     )
     $returnObject = $null
     $givenType = $givenObject.psobject.typenames
-    $wantedType = $wantedObject.psobject.typenames
-    $wantLeaf = ($wantedType -notcontains "System.Management.Automation.PSCustomObject")
+    $wantLeaf = ($wantedObject.psobject.typenames -notcontains "System.Management.Automation.PSCustomObject")
     $wantCustomSecureString = ($wantedObject -eq "Custom.SecureString")
     if ($wantCustomSecureString) {
         $wantedObject = "System.String"
