@@ -37,7 +37,7 @@ function Test-Tree {
     }
     Update-Tree -wantedObject $wantInt -givenObject $int -wantedObjectName "hwint"
     Update-Tree -wantedObject $wantInt -givenObject $string -wantedObjectName "hstringwint"
-    Update-Tree -wantedObject $wantString -givenObject $string -wantedObjectName "hstringwstring"
+    Update-Tree -wantedObject $wantString -givenObject $string -wantedObjectName "hwstring"
     Update-Tree -wantedObject $wantString -givenObject $int -wantedObjectName "hintwstring"
     Update-Tree -wantedObject $wantInt -givenObject $missingKeyObject -wantedObjectName "hobjwint"
     Update-Tree -wantedObject $wantedObject -givenObject $validObject -wantedObjectName "hwobj"

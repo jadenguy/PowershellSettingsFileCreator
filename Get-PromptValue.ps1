@@ -5,10 +5,19 @@ function Get-PromptValue {
         $wantedName,
         [bool]$wantedCustomSecureString = $false
     )
-    do {
-        $prompt = (Read-Host -Prompt "Enter a $wantedTypeString for $wantedName (Was $currentValue)") 
-        if (!$prompt){$prompt = $currentValue} else {$currentValue = $prompt}
+    $ret = ($currentValue -as $wantedTypeString)
+    if ($wantedCustomSecureString) {
+        
+    }
+    while (!$ret) {
+        $promptArgList = @{
+            Prompt = "Enter a $wantedTypeString for $wantedName"
+        }
+        if  ($currentValue)
+        {$promptArgList.Prompt += " (Was $currentValue)"}
+        $prompt = (Read-Host @promptArgList ) 
+        if (!$prompt) {$prompt = $currentValue} else {$currentValue = $prompt}
         $ret = ($prompt -as $wantedTypeString)
-    } until ($ret)
+    }
     return $ret    
 }

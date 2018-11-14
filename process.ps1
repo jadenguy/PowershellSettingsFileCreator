@@ -8,9 +8,8 @@
 . ( join-path $PSScriptRoot "Get-PromptValue")
 
 Write-Host starting
-Test-Tree
-# $settingsRequired = Get-SettingsFile "required.json"
-# $settingsFileIn = Get-SettingsFile "settings.json"
-# Update-Tree $settingsRequired ([ref]$settingsFileIn) "settings"
-# $settingsFileOut = $settingsFileIn | ConvertTo-Json -Depth 100
-# $settingsFileOut
+# Test-Tree
+$settingsRequired = Get-SettingsFile "required.json"
+$settingsFileIn = Get-SettingsFile "settings.json"
+$settingsFileOut = Update-Tree $settingsRequired $settingsFileIn | ConvertTo-Json -Depth 100
+$settingsFileOut
