@@ -3,21 +3,37 @@ function Get-PromptValue {
     param ($wantedTypeString,
         $currentValue,
         $wantedName,
-        [bool]$wantedCustomSecureString = $false
+        [bool]$secureString = $false
     )
     $ret = ($currentValue -as $wantedTypeString)
-    if ($wantedCustomSecureString) {
+    if ($secureString) {
         
     }
     while (!$ret) {
         $promptArgList = @{
             Prompt = "Enter a $wantedTypeString for $wantedName"
         }
-        if  ($currentValue)
-        {$promptArgList.Prompt += " (Was $currentValue)"}
+        if ($currentValue) {
+            $promptArgList.Prompt += " (Was $currentValue)"
+        }
+        if ($secureString) {
+            $promptArgList += @{
+                assecurestring = $true
+            }
+        }
         $prompt = (Read-Host @promptArgList ) 
-        if (!$prompt) {$prompt = $currentValue} else {$currentValue = $prompt}
-        $ret = ($prompt -as $wantedTypeString)
+        if (!$prompt) {
+            $prompt = $currentValue
+        }
+        else {
+            $currentValue = $prompt
+        }
+        if ($secureString) {
+            $ret = $prompt| ConvertFrom-SecureString
+        }
+        else {
+            $ret = ($prompt -as $wantedTypeString)
+        }
     }
-    return $ret    
+    return $ret
 }

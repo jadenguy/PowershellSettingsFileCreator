@@ -15,7 +15,7 @@
         {
             "type": "PowerShell",
             "request": "launch",
-            "name": "PowerShell Launch ",
+            "name": "PowerShell Launch Process File",
             "script": "${workspaceFolder}/process.ps1",
             "args": [],
             "cwd": "${workspaceFolder}"

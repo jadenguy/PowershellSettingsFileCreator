@@ -37,8 +37,8 @@ function Update-Tree {
         }
     }
     else {
-        $wantCustomSecureString = ($wantedObject -eq "Custom.SecureString")
-        if ($wantCustomSecureString) {
+        $wantSecureString = ($wantedObject -eq "System.Security.SecureString")
+        if ($wantSecureString) {
             $wantedObject = "System.String"
         }
         $rightType = ($givenType -contains $wantedObject)
@@ -51,11 +51,10 @@ function Update-Tree {
                 wantedTypeString         = $wantedObject
                 wantedName               = $wantedObjectName
                 currentValue             = $givenObject
-                wantedCustomSecureString = $wantCustomSecureString
+                secureString = $wantSecureString
             }
             $returnObject = Get-PromptValue @promtArgs
         }
     }
-    Write-Host $returnObject.gettype()
     return $returnObject
 }
