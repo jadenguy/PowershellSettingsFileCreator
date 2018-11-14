@@ -6,8 +6,7 @@
         },
         "cred": {
             "system": {
-                "user": "userString",
-                "pass": "passString"
+                "user": "userString"
             }
         }
     },
