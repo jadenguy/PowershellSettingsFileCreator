@@ -13,5 +13,6 @@ Write-Host starting
 # test-prompt
 $settingsRequired = Get-SettingsFile "required.json"
 $settingsFileIn = Get-SettingsFile "settings.json"
-$settingsFileOut = Update-Tree $settingsRequired $settingsFileIn | ConvertTo-Json -Depth 100
+$settings = Update-Tree $settingsRequired $settingsFileIn 
+$settingsFileOut = $settings| ConvertTo-Json -Depth 100
 $settingsFileOut
