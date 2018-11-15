@@ -7,18 +7,18 @@
         {
             "type": "PowerShell",
             "request": "launch",
-            "name": "PowerShell Launch Current File",
-            "script": "${file}",
+            "name": "Process.ps1",
+            "script": "${workspaceFolder}/process.ps1",
             "args": [],
-            "cwd": "${file}"
+            "cwd": "${workspaceFolder}"
         },
         {
             "type": "PowerShell",
             "request": "launch",
-            "name": "PowerShell Launch Process File",
-            "script": "${workspaceFolder}/process.ps1",
+            "name": "Launch Current",
+            "script": "${file}",
             "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${file}"
         }
     ]
 }
