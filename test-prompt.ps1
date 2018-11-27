@@ -17,6 +17,12 @@ function test-prompt() {
         wantedName               = 'password'
         secureString = $true
     }
+    $creds = @{
+        wantedTypeString         = "System.String"
+        currentValue             = ''
+        wantedName               = 'cred'
+        secureString = $true
+    }
     Get-PromptValue @hwint
     Get-PromptValue @hstringwint
     Get-PromptValue @password
