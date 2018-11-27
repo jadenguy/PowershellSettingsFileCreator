@@ -4,7 +4,8 @@
             "system": {
                 "user": "System.String",
                 "pass": "System.Security.SecureString"
-            }
+            },
+            "Other":"System.Management.Automation.PSCredential"
         },
         "settings": {
             "count": "System.Int32",
