@@ -1,4 +1,4 @@
-function Get-SettingsFile ($filename) {
+function Get-SettingsJsonFile ($filename) {
     $return = [PSCustomObject]@{}
     try {
         $file = Get-Item $filename 
@@ -10,7 +10,7 @@ function Get-SettingsFile ($filename) {
     }
     return $return
 }
-function Out-SettingsFile ($settings, $filename) {
+function Out-SettingsJsonFile ($settings, $filename) {
     $return = $false
     try {
         $jsonSettings = $settings | ConvertTo-Json -Depth 100

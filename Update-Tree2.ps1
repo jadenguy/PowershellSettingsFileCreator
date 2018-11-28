@@ -8,10 +8,15 @@ function Update-Tree {
     )
     $returnObject = $null
     $givenType = $givenObject.psobject.typenames
+    if ($givenObject) {$typelist = $givenType.split(".")}
     $wantBranch = ($wantedObject.psobject.typenames -contains "System.Management.Automation.PSCustomObject")
     if ($wantBranch) {
-        $haveBranch = ($givenType -contains "System.Management.Automation.PSCustomObject")
-        if ($haveBranch) {
+        $typeList = @()
+        if ($givenType) {
+            $typelist = $givenType.split(".")
+        }
+        $haveBranch = ($typelist -contains 'PSCustomObject') 
+        if ($haveBranch ) {
             $returnObject = $givenObject
         }
         else {
@@ -37,10 +42,6 @@ function Update-Tree {
         }
     }
     else {
-        $wantSecureString = ($wantedObject -eq "System.Security.SecureString")
-        if ($wantSecureString) {
-            $wantedObject = "System.String"
-        }
         $rightType = ($givenType -contains $wantedObject)
         if ($rightType) {
             $returnObject = $givenObject
@@ -48,10 +49,9 @@ function Update-Tree {
         else {
             $wasComplete = $false
             $promtArgs = @{
-                wantedTypeString         = $wantedObject
-                wantedName               = $wantedObjectName
-                currentValue             = $givenObject
-                secureString = $wantSecureString
+                wantedTypeString = $wantedObject
+                wantedName       = $wantedObjectName
+                currentValue     = $givenObject
             }
             $returnObject = Get-PromptValue @promtArgs
         }

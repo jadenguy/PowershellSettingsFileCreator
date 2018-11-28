@@ -1,22 +1,18 @@
 . ( join-path $PSScriptRoot "Get-SettingsFile")
-# . ( join-path $PSScriptRoot "Expand-Tree")
-# . ( join-path $PSScriptRoot "Compare-Trees")
-# . ( join-path $PSScriptRoot "Test-TreeByReference")
-# . ( join-path $PSScriptRoot "Update-Tree")
 . ( join-path $PSScriptRoot "Update-Tree2")
-. ( join-path $PSScriptRoot "Test-Tree")
-. ( join-path $PSScriptRoot "Test-Prompt")
 . ( join-path $PSScriptRoot "Get-PromptValue")
-
 
 Write-Host starting
 
-# Test-Tree
-test-prompt
-return
 $settingsFile = "settings.json"
-$settingsRequired = Get-SettingsFile "required.json"
-$settingsFileIn = Get-SettingsFile $settingsFile 
+$settingsRequired = Get-SettingsJsonFile "required.json"
+$settingsFileIn = Get-SettingsJsonFile $settingsFile 
 $settings = Update-Tree $settingsRequired $settingsFileIn 'settings'
-Out-SettingsFile $settings "outfile.json"
+Export-Clixml -Path "outfile.config" -InputObject $settings 
+write-host 'should be clean'
+$settingsFileIn2 = Import-Clixml -Path "outfile.config" 
+$settings2 = Update-Tree $settingsRequired $settingsFileIn2 'settings2'
+Out-SettingsJsonFile $settings "outfile.json" | Out-Null
+Export-Clixml -Path "outfile.config" -InputObject $settings 
+
 Write-Host done

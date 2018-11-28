@@ -5,19 +5,29 @@ function Get-PromptValue {
         $wantedName,
         [bool]$secureString = $false
     )
-    $ret = ($currentValue -as $wantedTypeString)
     $wantedTypeStringDisplay = $wantedTypeString
     if ($wantedTypeString -eq "System.Security.SecureString") {
         $secureString = $true        
         $wantedTypeString = "System.String"
     }
+    $ret = ($currentValue -as $wantedTypeString)
     if ($wantedTypeString -eq "System.Management.Automation.PSCredential") {
-        $cred = Get-Credential -Message "Enter a $wantedTypeStringDisplay for $wantedName"
-        $ret = [PSCustomObject]@{
-            pscredential = $cred
-            username = $cred.username
-            password = $cred.password|ConvertFrom-SecureString
+        if ($currentValue.PSCredential.psobject.typenames -contains "System.Management.Automation.PSCredential") {
+            $cred = $currentValue.PSCredential
         }
+        elseif ($currentValue.Username -and $($currentValue.Password|ConvertTo-SecureString -ErrorAction SilentlyContinue)) {
+            $cred = (New-Object pscredential $currentValue.Username, $($currentValue.Password|ConvertTo-SecureString))
+        
+        }
+        if (!$cred) {
+            $cred = Get-Credential -Message "Enter a $wantedTypeStringDisplay for $wantedName" -UserName $currentValue.Username
+        }
+        $ret = [PSCustomObject]@{
+            PSCredential = $cred
+            Username     = $cred.username
+            Password     = $cred.password|ConvertFrom-SecureString
+        }
+        
     } 
     while (!$ret) {
         $promptArgList = @{
