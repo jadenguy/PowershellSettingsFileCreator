@@ -2,7 +2,8 @@
     "prod": {
         "cred": {
             "system": {
-                "user": "String",
+                "server": "String",
+                "user": "System.String",
                 "pass": "System.Security.SecureString",
                 "api_key": "SecureString"
             },
