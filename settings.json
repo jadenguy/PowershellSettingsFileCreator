@@ -7,6 +7,13 @@
         "cred": {
             "system": {
                 "user": "userString"
+            },
+            "share": {
+                "Username": "12341234",
+                "Password": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000004f1c81dac33ff54a989fed091dd7498f0000000002000000000003660000c00000001000000046a7ec1b6bf6106fedf07fed112f65f90000000004800000a0000000100000008149da444aeebdc3004dc296ad0013cc20000000f7ee0af94e1493d74d00cd60b79c721c7a58d9bd52a0d236b22ba7aafc4fc99f140000005c32ce36b5c23d57e6eb90694fb498a5fe4f550c"
+            },
+            "other":{
+                "Username": "this@contoso.com"
             }
         }
     },

@@ -7,6 +7,7 @@
                 "pass": "System.Security.SecureString",
                 "api_key": "SecureString"
             },
+            "share": "System.Management.Automation.PSCredential",
             "Other": "System.Management.Automation.PSCredential",
             "Other2": "PSCredential"
         },

@@ -17,17 +17,15 @@ function Get-PromptValue {
         }
         elseif ($currentValue.Username -and $($currentValue.Password|ConvertTo-SecureString -ErrorAction SilentlyContinue)) {
             $cred = (New-Object pscredential $currentValue.Username, $($currentValue.Password|ConvertTo-SecureString))
-        
         }
         if (!$cred) {
-            $cred = Get-Credential -Message "Enter a $wantedTypeStringDisplay for $wantedName" -UserName $currentValue.Username
+            $cred = Get-Credential -Message "Enter credentials for $wantedName" -UserName $currentValue.Username
         }
         $ret = [PSCustomObject]@{
             PSCredential = $cred
             Username     = $cred.username
             Password     = $cred.password|ConvertFrom-SecureString
         }
-        
     } 
     while (!$ret) {
         $promptArgList = @{
