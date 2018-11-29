@@ -2,14 +2,16 @@
     "prod": {
         "cred": {
             "system": {
-                "user": "System.String",
-                "pass": "System.Security.SecureString"
+                "user": "String",
+                "pass": "System.Security.SecureString",
+                "api_key": "SecureString"
             },
-            "Other":"System.Management.Automation.PSCredential"
+            "Other": "System.Management.Automation.PSCredential",
+            "Other2": "PSCredential"
         },
         "settings": {
             "count": "System.Int32",
-            "times": "System.Int32"
+            "times": "Int32"
         },
         "other": {
             "x": "System.Int32"

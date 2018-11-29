@@ -6,12 +6,12 @@ function Get-PromptValue {
         [bool]$secureString = $false
     )
     $wantedTypeStringDisplay = $wantedTypeString
-    if ($wantedTypeString -eq "System.Security.SecureString") {
+    if ($wantedTypeString.split(".") -contains "SecureString") {
         $secureString = $true        
         $wantedTypeString = "System.String"
     }
     $ret = ($currentValue -as $wantedTypeString)
-    if ($wantedTypeString -eq "System.Management.Automation.PSCredential") {
+    if ($wantedTypeString.split(".") -contains "PSCredential") {
         if ($currentValue.PSCredential.psobject.typenames -contains "System.Management.Automation.PSCredential") {
             $cred = $currentValue.PSCredential
         }

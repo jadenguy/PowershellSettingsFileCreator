@@ -8,14 +8,9 @@ function Update-Tree {
     )
     $returnObject = $null
     $givenType = $givenObject.psobject.typenames
-    if ($givenObject) {$typelist = $givenType.split(".")}
-    $wantBranch = ($wantedObject.psobject.typenames -contains "System.Management.Automation.PSCustomObject")
+    $wantBranch = ($wantedObject.psobject.typenames.split(".") -contains "PSCustomObject")
     if ($wantBranch) {
-        $typeList = @()
-        if ($givenType) {
-            $typelist = $givenType.split(".")
-        }
-        $haveBranch = ($typelist -contains 'PSCustomObject') 
+        $haveBranch = ($givenObject -and $givenType.split(".") -contains 'PSCustomObject') 
         if ($haveBranch ) {
             $returnObject = $givenObject
         }
