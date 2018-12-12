@@ -61,7 +61,6 @@ function test-prompt() {
         wantedName       = 'cred'
         secureString     = $false
     }
-
     Get-PromptValue @hwint
     Get-PromptValue @hstringwint
     Get-PromptValue @password
@@ -70,5 +69,5 @@ function test-prompt() {
     Get-PromptValue @pscreds
     Get-PromptValue @pscreds2
     Get-PromptValue @pscreds3
-
+    Get-PromptValue @pscreds4
 }

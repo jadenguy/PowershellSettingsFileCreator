@@ -12,7 +12,7 @@ Export-Clixml -Path "outfile.config" -InputObject $settings
 write-host 'should be clean'
 $settingsFileIn2 = Import-Clixml -Path "outfile.config" 
 $settings2 = Update-Tree $settingsRequired $settingsFileIn2 'settings2'
-Out-SettingsJsonFile $settings "outfile.json" | Out-Null
+Out-SettingsJsonFile $settings2 "outfile.json" | Out-Null
 Export-Clixml -Path "outfile.config" -InputObject $settings 
 
 Write-Host done
